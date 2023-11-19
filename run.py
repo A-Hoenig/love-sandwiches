@@ -41,7 +41,6 @@ def validate_data(values):
     Raises ValueError if strings cannot be converted into int,
     or if there arent exactly 6 values.
     """
-    print(values)
     try:
         [int(value) for value in values]
         if len(values) != 6:
@@ -94,6 +93,21 @@ def get_last_5_entries_sales():
         columns.append(column[-5:])
     return columns
 
+def calculate_stock_data(data):
+    """
+    calculate the average stock for each type and add 10%
+    """
+    print("Calculatying new stock recommendation")
+    new_stock_data = []
+
+    for column in data:
+        int_column = [int(num) for num in column]
+        average = sum(int_column) / len(int_column)
+        stock_num = average * 1.1
+        new_stock_data.append(round(stock_num))
+        
+    return new_stock_data
+
 def main():
     """
     Run all program functions
@@ -103,7 +117,9 @@ def main():
     update_worksheet(sales_data, 'sales')
     new_surplus_data = calculate_surplus_data(sales_data)
     update_worksheet(new_surplus_data, 'surplus')
+    sales_columns = get_last_5_entries_sales()
+    stock_data = calculate_stock_data(sales_columns)
+    update_worksheet(stock_data, 'stock')
 
 print('\nWelcome to LoveSandwiches Data Automation\n')
-# main()
-sales_columns = get_last_5_entries_sales()
+main()
